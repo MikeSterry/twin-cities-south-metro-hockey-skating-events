@@ -1,18 +1,14 @@
 services:
   hockey-api:
     container_name: hockey-api
-    build: /opt/docker/hockey-app/HockeyAPI
+    build: ${DOCKER_CONFIG_PARENT_DIR}/twin-cities-south-metro-hockey-skating-events/HockeyAPI
     restart: always
-#     healthcheck:
-#       test: ["CMD-SHELL", "python -c \"import requests; print(requests.get('http://localhost:8080/api/public_skate_events').text)\""]
-#       interval: 1h
-#       timeout: 5m
-#       retries: 3
-#       start_period: 30s
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /run
     ports:
       - "5600:8080"
-    volumes:
-      - /opt/docker/hockey-app/HockeyAPI:/app
     networks:
       - web
     labels:
@@ -23,10 +19,14 @@ services:
       - "traefik.http.services.hockey-api.loadbalancer.server.port=8080"
   hockey-ui:
     container_name: hockey-ui
-    build: /opt/docker/hockey-app/HockeyUI
+    build: ${DOCKER_CONFIG_PARENT_DIR}/twin-cities-south-metro-hockey-skating-events/HockeyUI
     restart: always
+    read_only: true
+    tmpfs:
+      - /var/cache/nginx
+      - /var/run
     ports:
-      - "3600:80"
+      - "3600:8080"
     environment:
       - REACT_APP_API_URL=/api/public_skate_events
     networks:
@@ -36,7 +36,7 @@ services:
       - "traefik.http.routers.hockey-ui.entrypoints=https"
       - "traefik.http.routers.hockey-ui.rule=Host(`hockey.${SERVER_DOMAIN_NAME}`) && !PathPrefix(`/api`)"
       - "traefik.http.routers.hockey-ui.tls.certresolver=default"
-      - "traefik.http.services.hockey-ui.loadbalancer.server.port=80"
+      - "traefik.http.services.hockey-ui.loadbalancer.server.port=8080"
     depends_on:
       - hockey-api
 networks:
