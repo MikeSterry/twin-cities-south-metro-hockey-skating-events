@@ -27,10 +27,6 @@ function App() {
   return (
     <div className="container">
       <h1>Twin Cities - South Metro: Upcoming Hockey Events</h1>
-// ToDo: Add this image. I'd love to have it proportionally resize with the window.
-//      <div className="flex-container">
-//        <img src="images/HockeyBench.png" alt="bench with hockey skates, stick and a puck" />
-//      </div>
       <EventList events={events} />
     </div>
   );
