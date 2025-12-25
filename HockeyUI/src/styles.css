@@ -1,6 +1,15 @@
 body {
   font-family: system-ui, Helvetica Neue Medium;
+  color: #e8e5df;
   background: #282828;
+  /* set a href link color */
+  a {
+    color: #bc72f8;
+  }
+  /* Set a href link color for links that have been clicked */
+  a:visited {
+    color: #d8a1f7;
+  }
 }
 
 flex-container {
@@ -30,5 +39,5 @@ flex-container {
 
 .event-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 24px #0000004d;
 }
