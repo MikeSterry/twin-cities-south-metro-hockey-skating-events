@@ -7,9 +7,9 @@ config = {'CACHE_TYPE': 'SimpleCache', 'CACHE_DEFAULT_TIMEOUT': 43200}
 cache = Cache(app, config=config)
 app.json.sort_keys = False
 
-@app.route('/api/public_skate_events', methods=['GET'])
+@app.route('/api/get_events', methods=['GET'])
 @cache.cached(timeout=43200)
-def get_public_skate_events():
+def get_events():
     events = EventHandler().get_events()
     response = make_response(jsonify(events))
     response.headers.add("Access-Control-Allow-Origin", "*")
