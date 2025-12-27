@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import EventList from "./EventList";
 
-const API_URL = process.env.REACT_APP_API_URL || "/api/public_skate_events";
+const API_URL = process.env.REACT_APP_API_URL || "/api/get_events";
 
 function App() {
   const [events, setEvents] = useState([]);
