@@ -84,3 +84,11 @@ class Arena:
     """
     def __str__(self) -> str:
         return f"Arena(Name: {self.name}, Address: {self.get_address()}, Notes: {self.notes})"
+
+    """
+    Hash method to allow using Arena instances in sets and as dictionary keys.
+    Returns:
+        int: The hash value of the Arena instance.
+    """
+    def __hash__(self) -> int:
+        return hash((self.name, self.address.get_address_string(), self.notes))

@@ -80,3 +80,11 @@ class Event:
      """
     def __str__(self) -> str:
         return f'{{"event_type": "{self.event_type.name}", "arena": {{"name": "{self.arena.name}", "address": "{self.arena.address}", "notes": "{self.arena.notes}"}}, "start_time": "{self.start_time.strftime("%Y-%m-%d %H:%M")}", "end_time": "{self.end_time.strftime("%Y-%m-%d %H:%M")}", "cost": {{"adult_cost": {self.cost.adult_cost}, "child_cost": {self.cost.child_cost}}}}}'
+
+    """
+    Hash method to allow using Event instances in sets and as dictionary keys.
+    Returns:
+        int: The hash value of the Event instance.
+    """
+    def __hash__(self) -> int:
+        return hash((self.event_type, self.arena, self.start_time, self.end_time, self.cost.get_cost(), self.notes))
