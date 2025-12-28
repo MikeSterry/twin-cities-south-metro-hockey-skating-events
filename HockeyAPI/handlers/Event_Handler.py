@@ -79,12 +79,10 @@ class EventHandler:
         events.extend(self.farmington_handler.get_events())
 
         # TODO: Implement the following location handlers
-        # Edina handler not implemented yet
-        # Mystic handler not implemented yet
+        # Savage handler not implemented yet
         # Shakopee handler not implemented yet
-        # Highland handler not implemented yet
-        # Pleasant handler not implemented yet
-        # West St Paul handler not implemented yet
+        # Dakotah/Prior Lake handler not implemented yet
+        # Edina handler not implemented yet
 
         return events
 
