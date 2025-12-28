@@ -1,16 +1,18 @@
 from datetime import datetime, timedelta
 from models.Event import Event
 from location_handlers.AppleValley import AppleValley
-from location_handlers.Burnsville import Burnsville
-from location_handlers.Lakeville import Lakeville
-from location_handlers.Eagan import Eagan
-from location_handlers.Rosemount import Rosemount
 from location_handlers.Bloomington import Bloomington
+from location_handlers.Burnsville import Burnsville
+from location_handlers.Eagan import Eagan
 from location_handlers.Edina import Edina
-from location_handlers.InverGroveHeights import InverGroveHeights
-from location_handlers.Richfield import Richfield
-from location_handlers.SouthStPaul import SouthStPaul
 from location_handlers.Farmington import Farmington
+from location_handlers.InverGroveHeights import InverGroveHeights
+from location_handlers.Lakeville import Lakeville
+from location_handlers.PriorLake import PriorLake
+from location_handlers.Richfield import Richfield
+from location_handlers.Rosemount import Rosemount
+from location_handlers.Shakopee import Skakopee
+from location_handlers.SouthStPaul import SouthStPaul
 
 class EventHandler:
     """
@@ -19,16 +21,18 @@ class EventHandler:
 
     def __init__(self):
         self.apple_valley_handler = AppleValley()
-        self.burnsville_handler = Burnsville()
-        self.lakeville_handler = Lakeville()
-        self.eagan_handler = Eagan()
-        self.rosemount_handler = Rosemount()
         self.bloomington_handler = Bloomington()
+        self.burnsville_handler = Burnsville()
+        self.eagan_handler = Eagan()
         self.edina_handler = Edina()
-        self.inver_grove_heights_handler = InverGroveHeights()
-        self.richfield_handler = Richfield()
-        self.south_st_paul_handler = SouthStPaul()
         self.farmington_handler = Farmington()
+        self.inver_grove_heights_handler = InverGroveHeights()
+        self.lakeville_handler = Lakeville()
+        self.prior_lake_handler = PriorLake()
+        self.richfield_handler = Richfield()
+        self.rosemount_handler = Rosemount()
+        self.shakopee_handler = Skakopee()
+        self.south_st_paul_handler = SouthStPaul()
 
     def get_events(self) -> list[Event]:
         events = self.get_location_events()
@@ -68,20 +72,19 @@ class EventHandler:
     def get_location_events(self) -> list[Event]:
         events = []
         events.extend(self.apple_valley_handler.get_events())
-        events.extend(self.burnsville_handler.get_events())
-        events.extend(self.lakeville_handler.get_events())
-        events.extend(self.eagan_handler.get_events())
-        events.extend(self.rosemount_handler.get_events())
         events.extend(self.bloomington_handler.get_events())
-        events.extend(self.inver_grove_heights_handler.get_events())
-        events.extend(self.richfield_handler.get_events())
-        events.extend(self.south_st_paul_handler.get_events())
+        events.extend(self.burnsville_handler.get_events())
+        events.extend(self.eagan_handler.get_events())
         events.extend(self.farmington_handler.get_events())
+        events.extend(self.inver_grove_heights_handler.get_events())
+        events.extend(self.lakeville_handler.get_events())
+        events.extend(self.prior_lake_handler.get_events())
+        events.extend(self.richfield_handler.get_events())
+        events.extend(self.rosemount_handler.get_events())
+        events.extend(self.shakopee_handler.get_events())
+        events.extend(self.south_st_paul_handler.get_events())
 
         # TODO: Implement the following location handlers
-        # Savage handler not implemented yet
-        # Shakopee handler not implemented yet
-        # Dakotah/Prior Lake handler not implemented yet
         # Edina handler not implemented yet
 
         return events
