@@ -38,10 +38,12 @@ class Farmington:
         )
         self.arena = Arena(
             name="Schmitz-Maki Arena",
-            address=address
+            address=address,
+            notes="Offers skate rentals - $6 a pair"
         )
 
         self.event_type = EventType.OPEN_SKATE
+        self.EVENT_NOTES = "The open skate daily admission per-person rate is $6. Punch card/10 is $54."
 
         self.cost = Cost(cost=6.00)
 
@@ -64,7 +66,6 @@ class Farmington:
     """
     def get_events(self) -> list[Event]:
         print('Fetching Farmington events...')
-
         events = []
 
         try:
@@ -129,7 +130,8 @@ class Farmington:
             arena=self.arena,
             start_time=start_time,
             end_time=end_time,
-            cost=self.cost
+            cost=self.cost,
+            notes=self.EVENT_NOTES
         )
         return event
 
@@ -194,6 +196,6 @@ class Farmington:
     def get_specific_days_from_datetime_list(datetime_list: list[datetime], target_day_name: str) -> list[datetime]:
         specific_days = []
         for date in datetime_list:
-            if date.weekday() == WeekDay.get_weekday():
+            if date.weekday() == WeekDay.get_weekday(target_day_name).value:
                 specific_days.append(date)
         return specific_days
