@@ -10,6 +10,7 @@ from location_handlers.Edina import Edina
 from location_handlers.InverGroveHeights import InverGroveHeights
 from location_handlers.Richfield import Richfield
 from location_handlers.SouthStPaul import SouthStPaul
+from location_handlers.Farmington import Farmington
 
 class EventHandler:
     """
@@ -27,6 +28,7 @@ class EventHandler:
         self.inver_grove_heights_handler = InverGroveHeights()
         self.richfield_handler = Richfield()
         self.south_st_paul_handler = SouthStPaul()
+        self.farmington_handler = Farmington()
 
     def get_events(self) -> list[Event]:
         events = self.get_location_events()
@@ -74,10 +76,11 @@ class EventHandler:
         events.extend(self.inver_grove_heights_handler.get_events())
         events.extend(self.richfield_handler.get_events())
         events.extend(self.south_st_paul_handler.get_events())
+        events.extend(self.farmington_handler.get_events())
 
-        # events.extend(edina_handler.get_events())                 # Todo: Finish Edina handler
-        # Farmington handler not implemented yet
-        # Mistic Lake handler not implemented yet
+        # TODO: Implement the following location handlers
+        # Edina handler not implemented yet
+        # Mystic handler not implemented yet
         # Shakopee handler not implemented yet
         # Highland handler not implemented yet
         # Pleasant handler not implemented yet
