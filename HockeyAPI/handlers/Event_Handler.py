@@ -75,6 +75,7 @@ class EventHandler:
         events.extend(self.bloomington_handler.get_events())
         events.extend(self.burnsville_handler.get_events())
         events.extend(self.eagan_handler.get_events())
+        events.extend(self.edina_handler.get_events())
         events.extend(self.farmington_handler.get_events())
         events.extend(self.inver_grove_heights_handler.get_events())
         events.extend(self.lakeville_handler.get_events())
@@ -83,9 +84,6 @@ class EventHandler:
         events.extend(self.rosemount_handler.get_events())
         events.extend(self.shakopee_handler.get_events())
         events.extend(self.south_st_paul_handler.get_events())
-
-        # TODO: Implement the following location handlers
-        # Edina handler not implemented yet
 
         return events
 

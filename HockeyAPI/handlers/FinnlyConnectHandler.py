@@ -10,11 +10,15 @@ from utils.Web_Utils import get_query_selector, fetch_body
 
 class FinnlyConnectHandler:
 
-    def __init__(self, arena: Arena, open_skate_cost: Cost, developmental_hockey_cost: Cost, url: str):
+    def __init__(self, arena: Arena, open_skate_cost: Cost, developmental_hockey_cost: Cost,
+                 url: str, open_skate_event_name: str="Open Skating",
+                 developmental_hockey_event_name: str="Developmental Ice"):
         self.arena = arena
         self.open_skate_cost = open_skate_cost
         self.developmental_hockey_cost = developmental_hockey_cost
         self.url = url
+        self.open_skate_event_name = open_skate_event_name
+        self.developmental_hockey_event_name = developmental_hockey_event_name
 
     """
     Fetches public skate and developmental hockey events from website.
@@ -36,18 +40,22 @@ class FinnlyConnectHandler:
                 start_datetime_object = datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S")
                 end_datetime_object = datetime.strptime(end_time, "%Y-%m-%dT%H:%M:%S")
 
-                if event_name.strip() is not None:
-                    if event_name.strip() == "Developmental Ice'":
+                # print(f'Found event: {event_name} at {facility_name} from {start_datetime_object} to {end_datetime_object}')
+
+                if event_name is not None and event_name != "":
+                    if self.developmental_hockey_event_name in event_name.strip():
                         arena = self.arena
                         arena.set_notes(facility_name)
                         event_notes = event_name + " - " + facility_name
-                        event = self.create_event(EventType.STICK_AND_PUCK, arena, self.developmental_hockey_cost, start_datetime_object, end_datetime_object, event_notes)
+                        event = self.create_event(EventType.STICK_AND_PUCK, arena, self.developmental_hockey_cost,
+                                                  start_datetime_object, end_datetime_object, event_notes)
                         events.append(event)
-                    elif event_name.strip() == "Open Skating":
+                    elif self.open_skate_event_name in event_name.strip():
                         arena = self.arena
                         arena.set_notes(facility_name)
                         event_notes = event_name + " - " + facility_name
-                        event = self.create_event(EventType.OPEN_SKATE, arena, self.open_skate_cost, start_datetime_object, end_datetime_object, event_notes)
+                        event = self.create_event(EventType.OPEN_SKATE, arena, self.open_skate_cost,
+                                                  start_datetime_object, end_datetime_object, event_notes)
                         events.append(event)
         except Exception as e:
             print(f'Error fetching events: {e}')
