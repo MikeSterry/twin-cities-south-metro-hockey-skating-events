@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import EventList from "./EventList";
 
-const API_URL = process.env.REACT_APP_API_URL || "/api/get_events";
+const API_URL = process.env.REACT_APP_API_URL || "http://192.168.1.141:5000/api/get_events";
 
 function App() {
   const [events, setEvents] = useState([]);
@@ -26,6 +26,11 @@ function App() {
 
   return (
     <div className="container">
+      <img
+        class="top-banner"
+        src="images/HockeyBench.png"
+        alt="Top banner"
+      />
       <h1>Twin Cities - South Metro: Upcoming Hockey Events</h1>
       <EventList events={events} />
     </div>
