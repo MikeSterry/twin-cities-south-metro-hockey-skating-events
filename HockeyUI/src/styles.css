@@ -18,8 +18,7 @@ body {
 }
 
 top-banner {
-  width: 100vw;
-  height: 100vh;
+  margin: 2rem auto;
   object-fit: cover;
   display: block;
 }
