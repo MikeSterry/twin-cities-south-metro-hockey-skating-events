@@ -35,8 +35,8 @@ function App() {
         />
         <h1>Twin Cities - South Metro: Upcoming Hockey Events</h1>
         <EventList events={events} />
+        <Footer />
       </div>
-      <Footer />
     </div>
   );
 }
