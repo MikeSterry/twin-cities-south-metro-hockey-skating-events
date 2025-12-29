@@ -17,10 +17,18 @@ body {
   margin: 2rem auto;
 }
 
-top-banner {
-  margin: 2rem auto;
-  object-fit: cover;
-  display: block;
+.top-banner {
+  width: 100%;
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.top-banner img {
+  width: 100%;
+  height: auto;                /* maintain ratio */
+  max-height: 280px;           /* adjusted height */
+  object-fit: cover;           /* crop if needed */
 }
 
 .event-list {

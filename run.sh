@@ -15,6 +15,8 @@ DOCKER_ENV_FILE=$2
 set a
 source ${DOCKER_ENV_FILE:=/opt/docker/global.env}
 
-docker compose -p hockey-app down
 docker compose -p hockey-app -f $DOCKER_CONFIG_PARENT_DIR/twin-cities-south-metro-hockey-skating-events/docker-compose.yml --env-file ${DOCKER_ENV_FILE:=/opt/docker/global.env} build --no-cache
+
+docker compose -p hockey-app down
+
 docker compose -p hockey-app -f $DOCKER_CONFIG_PARENT_DIR/twin-cities-south-metro-hockey-skating-events/docker-compose.yml --env-file ${DOCKER_ENV_FILE:=/opt/docker/global.env} up -d
