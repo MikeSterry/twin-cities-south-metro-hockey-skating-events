@@ -19,16 +19,18 @@ body {
 
 .top-banner {
   width: 100%;
-  max-width: var(--container-max-width);
-  margin: 0 auto;
-  overflow: hidden;
+  height: 220px;        /* reduced height */
+  object-fit: cover;    /* crop nicely */
+  display: block;
+  margin: 0 auto 1rem;
+  border-radius: 8px;
 }
 
-.top-banner img {
-  width: 100%;
-  height: auto;                /* maintain ratio */
-  max-height: 280px;           /* adjusted height */
-  object-fit: cover;           /* crop if needed */
+/* Smaller banner on phones */
+@media (max-width: 600px) {
+  .top-banner {
+    height: 160px;
+  }
 }
 
 .event-list {

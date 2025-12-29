@@ -26,12 +26,11 @@ function App() {
 
   return (
     <div className="container">
-      <div className="top-banner">
-        <img
-          src="images/HockeyBench.png"
-          alt="Top banner"
-        />
-      </div>
+      <img
+        className="top-banner"
+        src="images/HockeyBench.png"
+        alt="Top banner"
+      />
       <h1>Twin Cities - South Metro: Upcoming Hockey Events</h1>
       <EventList events={events} />
     </div>
