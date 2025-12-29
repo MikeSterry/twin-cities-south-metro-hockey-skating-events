@@ -122,6 +122,3 @@ def post_body(url, body: str) -> requests.Response | str:
         'Content-Type': 'application/json;charset=utf-8'
     }
     return _post(url, body, headers).text
-
-def post_body_no_headers(url, body: str) -> requests.Response | str:
-    return _post(url, body, {}).text

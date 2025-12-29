@@ -5,7 +5,7 @@ from models.Arena import Arena
 from enums.Event_Type import EventType
 from models.Cost import Cost
 from models.Event import Event
-from utils.Web_Utils import post_body_no_headers
+from utils.Web_Utils import post_body
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
@@ -13,6 +13,12 @@ from dateutil.relativedelta import relativedelta
 class Burnsville:
     """
     Handler for Burnsville Ice Center events.
+
+    Couple Notes:
+        The current API does not return Stick and Puck events.
+        I could go directly to the Ice Arena ASPX calendar page, but it's sooooo slow...
+        That said, I do know that both events happen at the same time but only during on week days.
+        Public skating events on Sundays will NOT coincide with Stick and Puck.
     """
     def __init__(self):
         address = Address(
@@ -43,23 +49,36 @@ class Burnsville:
         next_week_epoch = self.get_epoch_for_next_week()
 
         try:
-            post_body_text = f"start={current_date_epoch}&end={next_week_epoch}&calIDs=149"
-            response = post_body_no_headers(self.url, post_body_text)
+            post_body_text = '{"start": ' + str(current_date_epoch) + ',"end": ' + str(next_week_epoch) + ',"calIDs": 149}'
+            response = post_body(self.url, post_body_text)
             json_response = json.loads(response)
-            for item in json_response:
-                if item['title'] is not None and item['title'] != '':
-                    event_title = item['title']
-                    start_time = self.convert_event_item_timestamp_to_datetime(item['start'])
-                    end_time = self.convert_event_item_timestamp_to_datetime(item['end'])
-                    if event_title == 'Public Skating':
-                        event = self.create_event(EventType.OPEN_SKATE, self.public_skating_cost, start_time, end_time)
-                        events.append(event)
-                    if event_title == 'Burnsville Ice Center':
-                        event = self.create_event(EventType.STICK_AND_PUCK, self.developmental_ice_cost, start_time, end_time)
-                        events.append(event)
+            events.extend(self.create_events_from_json_response(json_response))
         except Exception as e:
             print(f'Error fetching Burnsville events: {e}')
 
+        return events
+
+    """
+    Create Event objects from the JSON response.
+    Args:
+        json_response (list): The JSON response containing event data.
+    Returns:
+        list[Event]: A list of Event objects created from the JSON response.
+    """
+    def create_events_from_json_response(self, json_response) -> list[Event]:
+        events = []
+        for item in json_response:
+            if item['title'] is not None and item['title'] != '':
+                event_title = item['title']
+                start_time = self.convert_event_item_timestamp_to_datetime(item['start'])
+                end_time = self.convert_event_item_timestamp_to_datetime(item['end'])
+                if event_title == 'Public Skating':
+                    event = self.create_event(EventType.OPEN_SKATE, self.public_skating_cost, start_time, end_time)
+                    events.append(event)
+                    if not self.is_date_sunday(start_time):
+                        event = self.create_event(EventType.STICK_AND_PUCK, self.developmental_ice_cost, start_time,
+                                              end_time)
+                    events.append(event)
         return events
 
     """
@@ -90,32 +109,25 @@ class Burnsville:
     Returns:
         int: The Unix epoch timestamp for today's date at midnight.
     """
-    def get_epoch_for_today(self):
-        current_date = datetime.now()
-        current_date.replace(hour=0, minute=0, second=0, microsecond=0)
-        return self.convert_datetime_to_unix_timestamp(current_date)
+    @staticmethod
+    def get_epoch_for_today() -> int:
+        start_of_today = datetime.now().replace(
+            hour=0, minute=0, second=0, microsecond=0
+        )
+        return int(start_of_today.timestamp())
 
     """
     Get the Unix epoch timestamp for the date one week from today at midnight.
     Returns:
-        datetime: The Unix epoch timestamp for the date one week from today at midnight.
-    """
-    def get_epoch_for_next_week(self) -> datetime:
-        current_date = datetime.now()
-        current_date.replace(hour=0, minute=0, second=0, microsecond=0)
-        next_week = current_date + relativedelta(days=7)
-        return self.convert_datetime_to_unix_timestamp(next_week)
-
-    """
-    Convert a datetime object to a Unix timestamp.
-    Args:
-        dt (datetime): The datetime object to convert.
-    Returns:
-        int: The Unix timestamp.
+        int: The Unix epoch timestamp for the date one week from today at midnight.
     """
     @staticmethod
-    def convert_datetime_to_unix_timestamp(dt: datetime) -> int:
-        return int(dt.timestamp())
+    def get_epoch_for_next_week() -> int:
+        start_of_today = datetime.now().replace(
+            hour=0, minute=0, second=0, microsecond=0
+        )
+        next_week = start_of_today + relativedelta(days=7)
+        return int(next_week.timestamp())
 
     """
     Convert an event item timestamp string to a datetime object.
@@ -127,3 +139,14 @@ class Burnsville:
     @staticmethod
     def convert_event_item_timestamp_to_datetime(timestamp: str) -> datetime:
         return datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ")
+
+    """
+    Check if a given date is a Sunday.
+    Args:
+        date (datetime): The date to check.
+    Returns:
+        bool: True if the date is a Sunday, False otherwise.
+    """
+    @staticmethod
+    def is_date_sunday(date: datetime) -> bool:
+        return date.weekday() == 6
