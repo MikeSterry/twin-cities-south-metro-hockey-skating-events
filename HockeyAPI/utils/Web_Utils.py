@@ -80,12 +80,8 @@ Args:
 Returns:
     requests.Response | str: The HTTP response object or an error message.
 """
-def _post(url: str, body: str) -> requests.Response | str:
+def _post(url: str, body: str, headers: dict) -> requests.Response | str:
     try:
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
-            'Content-Type': 'application/json;charset=utf-8'
-        }
         response = requests.post(url, headers=headers, data=body)
         response.raise_for_status()  # Raise an error for bad responses
         return response
@@ -121,4 +117,11 @@ Returns:
     requests.Response | str: The body of the HTTP response as text or an error message.
 """
 def post_body(url, body: str) -> requests.Response | str:
-    return _post(url, body).text
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+        'Content-Type': 'application/json;charset=utf-8'
+    }
+    return _post(url, body, headers).text
+
+def post_body_no_headers(url, body: str) -> requests.Response | str:
+    return _post(url, body, {}).text
