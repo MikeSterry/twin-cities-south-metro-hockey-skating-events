@@ -1,7 +1,7 @@
 import React from "react";
 
 function mapLink(address) {
-  return "https://www.google.com/maps/search/?api=1&query=" +
+  return "https://maps.apple.com/?q=" +
     encodeURIComponent(address.street + ", " + address.city + ", " + address.state + " " + address.zip_code);
 }
 
