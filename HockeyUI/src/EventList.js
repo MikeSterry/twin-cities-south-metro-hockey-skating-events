@@ -1,7 +1,14 @@
 import React from "react";
 
 function mapLink(address) {
-  return "https://maps.apple.com/?q=" +
+  const isMacOS = /Macintosh|Mac OS X/.test(navigator.userAgent);
+  const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  if (isIOS || isMacOS) {
+    return "https://maps.apple.com/?q=" +
+        encodeURIComponent(address.street + ", " + address.city + ", " + address.state + " " + address.zip_code);
+  }
+  return "https://www.google.com/maps/search/?api=1&query=" +
     encodeURIComponent(address.street + ", " + address.city + ", " + address.state + " " + address.zip_code);
 }
 
