@@ -16,10 +16,10 @@ export const Footer = () => {
 
                 <div className="footer-section">
                     <h3>Contact</h3>
-                    <li>
+                    <p>
                         Suggestions or corrections?
-                    </li>
-                    <li>
+                    </p>
+                    <p>
                         Open an issue or submit a PR on &nbsp;
                         <a
                             href="https://github.com/MikeSterry/twin-cities-south-metro-hockey-skating-events"
@@ -28,7 +28,7 @@ export const Footer = () => {
                         >
                             GitHub
                         </a>
-                    </li>
+                    </p>
                 </div>
 
                 <hr/>
@@ -36,21 +36,21 @@ export const Footer = () => {
                 <div className="footer-section">
                     <h3>Credits</h3>
                     <h4>Photo provided with permission by Allen Photo Works.</h4>
-                    <li>
+                    <p>
                         Paul Allen is a professional photographer based in the Twin Cities South Metro area.
-                    </li>
-                    <li>
+                    </p>
+                    <p>
                         He specializes in sports photography, family portraits, event photography, or capturing any of
                         your memories.
-                    </li>
-                    <li>
+                    </p>
+                    <p>
                         Visit: &nbsp;
                         <a href="http://allenphotoworks.com">allenphotoworks.com</a>
-                    </li>
-                    <li>
+                    </p>
+                    <p>
                         Email: &nbsp;
                         <a href="mailto:paul@allenphotoworks.com">paul@allenphotoworks.com</a>
-                    </li>
+                    </p>
                 </div>
             </div>
 
