@@ -28,7 +28,7 @@ function App() {
     <div className="container">
       <img
         className="top-banner"
-        src="images/HockeyBench.png"
+        src="images/banner.jpg"
         alt="Top banner"
       />
       <h1>Twin Cities - South Metro: Upcoming Hockey Events</h1>
