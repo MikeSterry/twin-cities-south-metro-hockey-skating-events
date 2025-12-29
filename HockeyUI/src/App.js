@@ -34,61 +34,69 @@ function App() {
         />
         <h1>Twin Cities - South Metro: Upcoming Hockey Events</h1>
         <EventList events={events} />
+
+          {/* FOOTER */}
+          <footer className="footer">
+            <div className="footer-inner">
+              <div className="footer-section">
+                <h3>About</h3>
+                <p>
+                  Community-maintained list of public hockey, open skate,
+                  and stick-and-puck events in the Twin Cities south metro area.
+                </p>
+              </div>
+
+              <div className="footer-section">
+                <h3>Links</h3>
+                <ul>
+                  <li>
+                    <a
+                      href="https://github.com/MikeSterry/twin-cities-south-metro-hockey-skating-events"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      GitHub Repository
+                    </a>
+                  </li>
+                  <li>
+                    <a href="http://allenphotoworks.com">
+                      Paul Allen Photography
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="footer-section">
+                <h3>Contact</h3>
+                <p>
+                  Suggestions or corrections?
+                </p>
+                <p>
+                  Open an issue or submit a PR on GitHub.
+                </p>
+                <h3>Photo provided with permission by Paul Allen Photography.</h3>
+                <p>
+                  Paul Allen is a professional photographer based in the Twin Cities South Metro area.
+                </p>
+                <p>
+                  He specializes in sports photography, family portraits, event photography, or capturing any of your memories.
+                </p>
+                <p>
+                  Visit: &nbsp;
+                  <a href="http://allenphotoworks.com">allenphotoworks.com</a>
+                </p>
+                <p>
+                  Email: &nbsp;
+                  <a href="mailto:paul@allenphotoworks.com">paul@allenphotoworks.com</a>
+                </p>
+              </div>
+            </div>
+
+            <div className="footer-bottom">
+              © {new Date().getFullYear()} Twin Cities Hockey Events
+            </div>
+          </footer>
       </div>
-
-      {/* FOOTER */}
-      <footer className="footer">
-        <div className="footer-inner">
-          <div className="footer-section">
-            <h3>About</h3>
-            <p>
-              Community-maintained list of public hockey, open skate,
-              and stick-and-puck events in the Twin Cities south metro area.
-            </p>
-          </div>
-
-          <div className="footer-section">
-            <h3>Links</h3>
-            <ul>
-              <li>
-                <a
-                  href="https://github.com/MikeSterry/twin-cities-south-metro-hockey-skating-events"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  GitHub Repository
-                </a>
-              </li>
-              <li>
-                <a href="http://allenphotoworks.com">
-                  Paul Allen Photography
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <div className="footer-section">
-            <h3>Contact</h3>
-            <p>
-              Suggestions or corrections?
-              Open an issue or submit a PR on GitHub.
-            </p>
-            <h3>Photo provided with permission by Paul Allen Photography.</h3>
-            <p>
-              Paul Allen is a professional photographer based in the Twin Cities South Metro area.
-              He specializes in sports photography, family portraits, event photography, or capturing any of your memories.
-              Visit&nbsp;
-              <a href="http://allenphotoworks.com">allenphotoworks.com</a>
-              Email&nbsp;
-              <a href="mailto:paul@allenphotoworks.com">paul@allenphotoworks.com</a>
-            </p>
-          </div>
-        </div>
-
-        <div className="footer-bottom">
-          © {new Date().getFullYear()} Twin Cities Hockey Events
-        </div>
-      </footer>
     </>
   );
 }
