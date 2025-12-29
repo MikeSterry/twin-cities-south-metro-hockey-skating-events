@@ -10,7 +10,7 @@
 # NOTE: I do set a default for the env file, but not the config parent dir. Users can change the env to whatever they want, but the compose file does require the parent config var; 
 #           which we can't override here
 
-DOCKER_ENV_FILE=$2
+DOCKER_ENV_FILE=$1
 
 set a
 source ${DOCKER_ENV_FILE:=/opt/docker/global.env}

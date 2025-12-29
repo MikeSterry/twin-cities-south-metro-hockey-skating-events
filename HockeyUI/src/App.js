@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import EventList from "./EventList";
+import { Footer } from "./Footer";
 
 const API_URL = process.env.REACT_APP_API_URL || "/api/get_events";
 
@@ -25,14 +26,17 @@ function App() {
   if (error) return <p>{error}</p>;
 
   return (
-    <div className="container">
-      <img
-        className="top-banner"
-        src="images/HockeyBench.png"
-        alt="Top banner"
-      />
-      <h1>Twin Cities - South Metro: Upcoming Hockey Events</h1>
-      <EventList events={events} />
+    <div>
+      <div className="container">
+        <img
+          className="top-banner"
+          src="images/banner.jpg"
+          alt="Top banner"
+        />
+        <h1>Twin Cities - South Metro: Upcoming Hockey Events</h1>
+        <EventList events={events} />
+        <Footer />
+      </div>
     </div>
   );
 }
