@@ -7,7 +7,7 @@ export const Footer = () => {
                 <div className="footer-section">
                     <h3>About</h3>
                     <p>
-                        Community-maintained list of public hockey, open skate,
+                        Community-maintained list of public/open skate,
                         and stick-and-puck events in the Twin Cities south metro area.
                     </p>
                 </div>
@@ -57,7 +57,7 @@ export const Footer = () => {
             <hr/>
 
             <div className="footer-bottom">
-                © {new Date().getFullYear()} Twin Cities Hockey Events
+                © {new Date().getFullYear()} Twin Cities - South Metro Hockey Events
             </div>
         </div>
     );
