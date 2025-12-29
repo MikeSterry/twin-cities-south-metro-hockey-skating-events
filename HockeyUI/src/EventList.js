@@ -1,6 +1,11 @@
 import React from "react";
+import { isIOS, isMacOs } from 'react-device-detect';
 
 function mapLink(address) {
+  if (isIOS || isMacOs) {
+    return "https://maps.apple.com/?q=" +
+        encodeURIComponent(address.street + ", " + address.city + ", " + address.state + " " + address.zip_code);
+  }
   return "https://www.google.com/maps/search/?api=1&query=" +
     encodeURIComponent(address.street + ", " + address.city + ", " + address.state + " " + address.zip_code);
 }
