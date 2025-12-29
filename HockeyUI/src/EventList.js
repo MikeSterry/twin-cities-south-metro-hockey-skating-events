@@ -1,10 +1,8 @@
 import React from "react";
+import { isIOS, isMacOs } from 'react-device-detect';
 
 function mapLink(address) {
-  const isMacOS = /Macintosh|Mac OS X/.test(navigator.userAgent);
-  const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent) ||
-      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-  if (isIOS || isMacOS) {
+  if (isIOS || isMacOs) {
     return "https://maps.apple.com/?q=" +
         encodeURIComponent(address.street + ", " + address.city + ", " + address.state + " " + address.zip_code);
   }
