@@ -45,7 +45,7 @@ export const Footer = () => {
                     </p>
                     <p>
                         Visit: &nbsp;
-                        <a href="http://allenphotoworks.com">allenphotoworks.com</a>
+                        <a href="http://allenphotoworks.com" target="_blank">allenphotoworks.com</a>
                     </p>
                     <p>
                         Email: &nbsp;
