@@ -1,3 +1,6 @@
+import colorama
+colorama.init = lambda *args, **kwargs: None  # Prevent tatsu/ics from repeatedly wrapping stdout
+
 from flask import Flask, jsonify, make_response
 from flask_caching import Cache
 from handlers.Event_Handler import EventHandler

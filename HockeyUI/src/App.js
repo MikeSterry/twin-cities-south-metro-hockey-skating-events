@@ -1,13 +1,44 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import EventList from "./EventList";
 import { Footer } from "./Footer";
 
 const API_URL = process.env.REACT_APP_API_URL || "/api/get_events";
 
+function formatDateLabel(dateStr) {
+  const [year, month, day] = dateStr.split("-").map(Number);
+  const date = new Date(year, month - 1, day);
+  return date.toLocaleDateString("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+  });
+}
+
+function getInitialTheme() {
+  const saved = localStorage.getItem("theme");
+  if (saved === "dark" || saved === "light") return saved;
+  return window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
+}
+
 function App() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [filterCity, setFilterCity] = useState("");
+  const [filterDate, setFilterDate] = useState("");
+  const [filterType, setFilterType] = useState("");
+  const [theme, setTheme] = useState(getInitialTheme);
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  function toggleTheme() {
+    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+  }
 
   useEffect(() => {
     fetch(API_URL)
@@ -22,21 +53,138 @@ function App() {
       });
   }, []);
 
-  if (loading) return <p>Loading events…</p>;
-  if (error) return <p>{error}</p>;
+  const cities = useMemo(
+    () =>
+      [...new Set(events.map((e) => e.arena.address.city))].sort(),
+    [events]
+  );
+
+  const dates = useMemo(
+    () =>
+      [...new Set(events.map((e) => e.start_time.split(" ")[0]))].sort(),
+    [events]
+  );
+
+  const filteredEvents = useMemo(
+    () =>
+      events.filter((e) => {
+        if (filterCity && e.arena.address.city !== filterCity) return false;
+        if (filterDate && !e.start_time.startsWith(filterDate)) return false;
+        if (filterType && e.event_type !== filterType) return false;
+        return true;
+      }),
+    [events, filterCity, filterDate, filterType]
+  );
+
+  const hasActiveFilter = filterCity || filterDate || filterType;
+
+  function clearFilters() {
+    setFilterCity("");
+    setFilterDate("");
+    setFilterType("");
+  }
+
+  if (loading)
+    return (
+      <div className="container">
+        <div className="state-message">
+          <p className="loading-dots">Loading events…</p>
+        </div>
+      </div>
+    );
+
+  if (error)
+    return (
+      <div className="container">
+        <div className="state-message state-message--error">
+          <p>{error}</p>
+        </div>
+      </div>
+    );
 
   return (
     <div>
-      <div className="container">
+      <div className="hero">
         <img
-          className="top-banner"
+          className="hero-banner"
           src="images/banner.jpg"
-          alt="Top banner"
+          alt="Hockey goalie guarding the net"
         />
-        <h1>Twin Cities - South Metro: Upcoming Hockey Events</h1>
-        <EventList events={events} />
-        <Footer />
+        <button
+          className="theme-toggle"
+          onClick={toggleTheme}
+          aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+        >
+          {theme === "dark" ? "\u2600\uFE0F" : "\uD83C\uDF19"}
+        </button>
+        <div className="hero-overlay">
+          <h1 className="hero-title">
+            Twin Cities South Metro: Upcoming Hockey Events
+          </h1>
+        </div>
       </div>
+      <div className="container">
+        <div className="filter-bar">
+          <div className="filter-group">
+            <label className="filter-label" htmlFor="filter-city">City</label>
+            <select
+              id="filter-city"
+              className="filter-select"
+              value={filterCity}
+              onChange={(e) => setFilterCity(e.target.value)}
+            >
+              <option value="">All Cities</option>
+              {cities.map((city) => (
+                <option key={city} value={city}>{city}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className="filter-group">
+            <label className="filter-label" htmlFor="filter-date">Date</label>
+            <select
+              id="filter-date"
+              className="filter-select"
+              value={filterDate}
+              onChange={(e) => setFilterDate(e.target.value)}
+            >
+              <option value="">All Dates</option>
+              {dates.map((d) => (
+                <option key={d} value={d}>{formatDateLabel(d)}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className="filter-group">
+            <span className="filter-label">Event Type</span>
+            <div className="filter-chips">
+              {["", "Open Skate", "Stick and Puck"].map((type) => (
+                <button
+                  key={type}
+                  className={`filter-chip${filterType === type ? " filter-chip--active" : ""}`}
+                  onClick={() => setFilterType(type)}
+                >
+                  {type || "All"}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="filter-summary">
+            <span>
+              Showing {filteredEvents.length} of {events.length} events
+            </span>
+            {hasActiveFilter && (
+              <button className="filter-clear" onClick={clearFilters}>
+                Clear filters
+              </button>
+            )}
+          </div>
+        </div>
+
+        <EventList events={filteredEvents} />
+      </div>
+      <Footer />
     </div>
   );
 }
