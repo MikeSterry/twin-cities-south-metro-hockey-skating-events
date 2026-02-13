@@ -1,0 +1,17 @@
+export const arenaCoordinates = {
+  "Apple Valley Sports Arena": [44.7319, -93.2174],
+  "Bloomington Ice Garden": [44.8408, -93.3318],
+  "Burnsville Ice Center": [44.7672, -93.2783],
+  "Eagan Civic Center": [44.8041, -93.1670],
+  "Braemar Arena": [44.8669, -93.3758],
+  "Schmitz-Maki Arena": [44.6402, -93.1466],
+  "Veterans Memorial Community Center": [44.8357, -93.0607],
+  "Ames Arena - Lakeview Bank Rink": [44.6497, -93.2525],
+  "Ames Arena - Genz-Ryan Rink": [44.6497, -93.2525],
+  "Hasse Arena": [44.6536, -93.2866],
+  "Dakotah Ice Center": [44.7236, -93.4461],
+  "Richfield Ice Arena": [44.8780, -93.2636],
+  "Rosemount Ice Arena": [44.7444, -93.0868],
+  "Shakopee Ice Center": [44.7781, -93.5198],
+  "Doug Woog Arena": [44.8874, -93.0627],
+};

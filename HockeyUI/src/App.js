@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import EventList from "./EventList";
+import MapView from "./MapView";
 import { Footer } from "./Footer";
 
 const API_URL = process.env.REACT_APP_API_URL || "/api/get_events";
@@ -22,13 +23,26 @@ function getInitialTheme() {
     : "light";
 }
 
+function getInitialFilters() {
+  const params = new URLSearchParams(window.location.search);
+  return {
+    city: params.get("city") || "",
+    date: params.get("date") || "",
+    type: params.get("type") || "",
+    sort: params.get("sort") || "time",
+  };
+}
+
 function App() {
+  const initial = getInitialFilters();
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [filterCity, setFilterCity] = useState("");
-  const [filterDate, setFilterDate] = useState("");
-  const [filterType, setFilterType] = useState("");
+  const [filterCity, setFilterCity] = useState(initial.city);
+  const [filterDate, setFilterDate] = useState(initial.date);
+  const [filterType, setFilterType] = useState(initial.type);
+  const [sortBy, setSortBy] = useState(initial.sort);
+  const [viewMode, setViewMode] = useState("list");
   const [theme, setTheme] = useState(getInitialTheme);
 
   useEffect(() => {
@@ -39,6 +53,18 @@ function App() {
   function toggleTheme() {
     setTheme((prev) => (prev === "dark" ? "light" : "dark"));
   }
+
+  // Sync filter state to URL
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (filterCity) params.set("city", filterCity);
+    if (filterDate) params.set("date", filterDate);
+    if (filterType) params.set("type", filterType);
+    if (sortBy && sortBy !== "time") params.set("sort", sortBy);
+    const qs = params.toString();
+    const url = window.location.pathname + (qs ? `?${qs}` : "");
+    window.history.replaceState(null, "", url);
+  }, [filterCity, filterDate, filterType, sortBy]);
 
   useEffect(() => {
     fetch(API_URL)
@@ -65,23 +91,33 @@ function App() {
     [events]
   );
 
-  const filteredEvents = useMemo(
-    () =>
-      events.filter((e) => {
-        if (filterCity && e.arena.address.city !== filterCity) return false;
-        if (filterDate && !e.start_time.startsWith(filterDate)) return false;
-        if (filterType && e.event_type !== filterType) return false;
-        return true;
-      }),
-    [events, filterCity, filterDate, filterType]
-  );
+  const filteredEvents = useMemo(() => {
+    const filtered = events.filter((e) => {
+      if (filterCity && e.arena.address.city !== filterCity) return false;
+      if (filterDate && !e.start_time.startsWith(filterDate)) return false;
+      if (filterType && e.event_type !== filterType) return false;
+      return true;
+    });
+    if (sortBy === "cost-asc") {
+      return [...filtered].sort(
+        (a, b) => (a.cost?.cost ?? Infinity) - (b.cost?.cost ?? Infinity)
+      );
+    }
+    if (sortBy === "cost-desc") {
+      return [...filtered].sort(
+        (a, b) => (b.cost?.cost ?? -1) - (a.cost?.cost ?? -1)
+      );
+    }
+    return filtered;
+  }, [events, filterCity, filterDate, filterType, sortBy]);
 
-  const hasActiveFilter = filterCity || filterDate || filterType;
+  const hasActiveFilter = filterCity || filterDate || filterType || sortBy !== "time";
 
   function clearFilters() {
     setFilterCity("");
     setFilterDate("");
     setFilterType("");
+    setSortBy("time");
   }
 
   if (loading)
@@ -119,7 +155,7 @@ function App() {
         </button>
         <div className="hero-overlay">
           <h1 className="hero-title">
-            Twin Cities South Metro: Upcoming Hockey Events
+            Twin Cities South Metro: Upcoming Hockey &amp; Skating Events
           </h1>
         </div>
       </div>
@@ -170,6 +206,20 @@ function App() {
             </div>
           </div>
 
+          <div className="filter-group">
+            <label className="filter-label" htmlFor="filter-sort">Sort</label>
+            <select
+              id="filter-sort"
+              className="filter-select"
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+            >
+              <option value="time">Time</option>
+              <option value="cost-asc">Cost: Low to High</option>
+              <option value="cost-desc">Cost: High to Low</option>
+            </select>
+          </div>
+
           <div className="filter-summary">
             <span>
               Showing {filteredEvents.length} of {events.length} events
@@ -179,10 +229,30 @@ function App() {
                 Clear filters
               </button>
             )}
+            <div className="view-toggle">
+              <button
+                className={`view-toggle-btn${viewMode === "list" ? " view-toggle-btn--active" : ""}`}
+                onClick={() => setViewMode("list")}
+                aria-label="List view"
+              >
+                ☰
+              </button>
+              <button
+                className={`view-toggle-btn${viewMode === "map" ? " view-toggle-btn--active" : ""}`}
+                onClick={() => setViewMode("map")}
+                aria-label="Map view"
+              >
+                🗺
+              </button>
+            </div>
           </div>
         </div>
 
-        <EventList events={filteredEvents} />
+        {viewMode === "map" ? (
+          <MapView events={filteredEvents} />
+        ) : (
+          <EventList events={filteredEvents} />
+        )}
       </div>
       <Footer />
     </div>
