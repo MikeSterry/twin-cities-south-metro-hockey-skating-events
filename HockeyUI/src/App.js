@@ -140,26 +140,26 @@ function App() {
 
   return (
     <div>
-      <div className="hero">
-        <img
-          className="hero-banner"
-          src="images/banner.jpg"
-          alt="Hockey goalie guarding the net"
-        />
-        <button
-          className="theme-toggle"
-          onClick={toggleTheme}
-          aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-        >
-          {theme === "dark" ? "\u2600\uFE0F" : "\uD83C\uDF19"}
-        </button>
-        <div className="hero-overlay">
-          <h1 className="hero-title">
-            Twin Cities South Metro: Upcoming Hockey &amp; Skating Events
-          </h1>
-        </div>
-      </div>
       <div className="container">
+        <div className="hero">
+          <img
+            className="hero-banner"
+            src="images/banner.jpg"
+            alt="Hockey goalie guarding the net"
+          />
+          <button
+            className="theme-toggle"
+            onClick={toggleTheme}
+            aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+          >
+            {theme === "dark" ? "\u2600\uFE0F" : "\uD83C\uDF19"}
+          </button>
+          <div className="hero-overlay">
+            <h1 className="hero-title">
+              Twin Cities South Metro: Upcoming Hockey &amp; Skating Events
+            </h1>
+          </div>
+        </div>
         <div className="filter-bar">
           <div className="filter-group">
             <label className="filter-label" htmlFor="filter-city">City</label>
