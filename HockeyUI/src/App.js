@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import EventList from "./EventList";
-import MapView from "./MapView";
 import { Footer } from "./Footer";
+import MapView from "./MapView";
 
 const API_URL = process.env.REACT_APP_API_URL || "/api/get_events";
 
