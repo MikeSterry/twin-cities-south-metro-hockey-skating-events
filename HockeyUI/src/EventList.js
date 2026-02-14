@@ -99,22 +99,25 @@ export default function EventList({ events }) {
                 ${event.cost?.cost ?? "Cost Unknown"}
               </p>
               <div className="card-actions">
-                <button
-                  className="card-action-btn"
-                  onClick={() => downloadICS(event)}
-                  title="Download .ics file"
-                >
-                  📅 .ics
-                </button>
-                <a
-                  className="card-action-btn"
-                  href={googleCalendarUrl(event)}
-                  target="_blank"
-                  rel="noreferrer"
-                  title="Add to Google Calendar"
-                >
-                  📅 Google
-                </a>
+                {isIOS || isMacOs ? (
+                  <button
+                    className="card-action-btn"
+                    onClick={() => downloadICS(event)}
+                    title="Add to Calendar"
+                  >
+                    📅 Add to Calendar
+                  </button>
+                ) : (
+                  <a
+                    className="card-action-btn"
+                    href={googleCalendarUrl(event)}
+                    target="_blank"
+                    rel="noreferrer"
+                    title="Add to Google Calendar"
+                  >
+                    📅 Add to Calendar
+                  </a>
+                )}
               </div>
             </div>
           </li>
