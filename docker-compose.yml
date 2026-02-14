@@ -1,7 +1,7 @@
 services:
   hockey-api:
     container_name: hockey-api
-    build: ${DOCKER_CONFIG_PARENT_DIR}/twin-cities-south-metro-hockey-skating-events/HockeyAPI
+    build: ./HockeyAPI
     restart: always
     read_only: true
     tmpfs:
@@ -19,7 +19,7 @@ services:
       - "traefik.http.services.hockey-api.loadbalancer.server.port=8080"
   hockey-ui:
     container_name: hockey-ui
-    build: ${DOCKER_CONFIG_PARENT_DIR}/twin-cities-south-metro-hockey-skating-events/HockeyUI
+    build: ./HockeyUI
     restart: always
     read_only: true
     tmpfs:
